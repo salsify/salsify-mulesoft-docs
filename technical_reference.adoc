@@ -1,0 +1,1176 @@
+
+
+= Salsify Connector Mule4Connector Module Connector Reference
+
+
+
+== Configurations
+---
+[[Config]]
+=== Config
+
+
+==== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+|Name | String | The name for this configuration. Connectors reference the configuration with this name. | | *x*{nbsp}
+| Connection a| <<Config_BearerAuth, Bearer Auth Connection Provider>>
+ | The connection types that can be provided to this configuration. | | *x*{nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  60 | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  SECONDS | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  AUTO | {nbsp}
+| Name a| String |  The identifier of this element used to reference it in other components |  | *x*{nbsp}
+| Expiration Policy a| <<ExpirationPolicy>> |  Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit. |  | {nbsp}
+|===
+
+==== Connection Types
+[[Config_BearerAuth]]
+===== Bearer Auth Connection Provider
+
+
+This is the last layer of the connection provider generation gap pattern. It is what finally gets exposed as the connection provider, including all customizations made in the refinement layer.
+
+
+====== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Default headers a| Object |  |  | {nbsp}
+| Default query parameters a| Object |  |  | {nbsp}
+| Connection Timeout a| Number |  The timeout for establishing connections to the remote service |  30 | {nbsp}
+| Connection Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Connection Timeout |  SECONDS | {nbsp}
+| Use Persistent Connections a| Boolean |  If false, each connection will be closed after the first request is completed. |  true | {nbsp}
+| Max Connections a| Number |  The maximum number of outbound connections that will be kept open at the same time |  -1 | {nbsp}
+| Connection Idle Timeout a| Number |  A timeout for how long a connection can remain idle before it is closed |  30 | {nbsp}
+| Connection Idle Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the connection Idle Timeout |  SECONDS | {nbsp}
+| Stream Response a| Boolean |  Whether or not received responses should be streamed |  false | {nbsp}
+| Response Buffer Size a| Number |  The space in bytes for the buffer where the HTTP response will be stored. |  -1 | {nbsp}
+| Token a| String |  The token used to authenticate the requests. |  | *x*{nbsp}
+| Proxy Config a| <<Proxy>> |  Reusable configuration element for outbound connections through a proxy. A proxy element must define a host name and a port attributes, and optionally can define a username and a password. |  | {nbsp}
+| Protocol a| Enumeration, one of:
+
+** HTTP
+** HTTPS |  Protocol to use for communication. Valid values are HTTP and HTTPS |  HTTP | {nbsp}
+| TLS Configuration a| <<Tls>> |  |  | {nbsp}
+| Reconnection a| <<Reconnection>> |  When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy |  | {nbsp}
+|===
+
+==== Associated Operations
+* <<BulkUpdateRecords>> {nbsp}
+* <<BulkUpsertDigitalAssets>> {nbsp}
+* <<BulkUpsertRecords>> {nbsp}
+* <<CreateDigitalAsset>> {nbsp}
+* <<CreateRecords>> {nbsp}
+* <<GetAllImportRuns>> {nbsp}
+* <<GetImportRun>> {nbsp}
+* <<GetRecord>> {nbsp}
+* <<ReadDigitalAssetMetadata>> {nbsp}
+* <<RefreshDigitalAsset>> {nbsp}
+* <<StartImportRun>> {nbsp}
+* <<UpdateDigitalAsset>> {nbsp}
+* <<UpdateRecord>> {nbsp}
+
+
+
+== Operations
+
+[[BulkUpdateRecords]]
+== Bulk Update Records
+`<salsify-connector-mule-4:bulk-update-records>`
+
+
+[Update up to 100 records](https://developers.salsify.com/reference#bulk-update-records) by sending an array of record objects. Each record object must contain the Salsify record identifier, and already exist in Salsify. This operation makes an HTTP PUT request to the /orgs/{organizationId}/records endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Array of Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[BulkUpsertDigitalAssets]]
+== Bulk Upsert Digital Assets
+`<salsify-connector-mule-4:bulk-upsert-digital-assets>`
+
+
+Bulk Upsert Digital Assets This operation makes an HTTP PUT request to the /orgs/{organizationId}/digital_assets/_upsert endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Array of Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Array of String
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[BulkUpsertRecords]]
+== Bulk Upsert Records
+`<salsify-connector-mule-4:bulk-upsert-records>`
+
+
+[Upsert](https://developers.salsify.com/reference#bulk-upsert-records) (create new and update existing) up to 100 records by sending an array of product objects. Each object must contain the Salsify record identifier. This operation makes an HTTP PUT request to the /orgs/{organizationId}/records/_upsert endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| * Any
+* Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[CreateDigitalAsset]]
+== Create Digital Asset
+`<salsify-connector-mule-4:create-digital-asset>`
+
+
+Create a single or several new digital assets This operation makes an HTTP POST request to the /orgs/{organizationId}/digital_assets endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Array of Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[CreateRecords]]
+== Create Records
+`<salsify-connector-mule-4:create-records>`
+
+
+Supports creation of [one](https://developers.salsify.com/reference#create-record) or up to [100 records](https://developers.salsify.com/reference#bulk-create-records) per request. Customer's Salsify record identifier is required. This operation makes an HTTP POST request to the /orgs/{organizationId}/records endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| * Any
+* Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| * Any
+* Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[GetAllImportRuns]]
+== Get All Import Runs
+`<salsify-connector-mule-4:get-all-import-runs>`
+
+
+Retrieve the status of all runs from a given import This operation makes an HTTP GET request to the /orgs/{organizationId}/imports/{importId}/runs endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Import Id a| String |  The id of an import run. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Array of Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[GetImportRun]]
+== Get Import Run
+`<salsify-connector-mule-4:get-import-run>`
+
+
+Retrieve the status of the current or most recent run of an import. This operation makes an HTTP GET request to the /orgs/{organizationId}/imports/runs/{importRunId} endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Import Run Id a| String |  The specific run id of a given import |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[GetRecord]]
+== Get Record
+`<salsify-connector-mule-4:get-record>`
+
+
+[Retrieve one record](https://developers.salsify.com/reference/read-record). The URL must contain the Salsify record identifier as a parameter, and the record must already exist in Salsify. This operation makes an HTTP GET request to the /orgs/{organizationId}/records/{recordId} endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Record Id a| String |  The Salsify record identifier for this record. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[ReadDigitalAssetMetadata]]
+== Read Digital Asset Metadata
+`<salsify-connector-mule-4:read-digital-asset-metadata>`
+
+
+Read Digital Asset Metadata This operation makes an HTTP GET request to the /orgs/{organizationId}/digital_assets/{digitalAssetId} endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Digital Asset Id a| String |  The Id of the Salsify Digital Asset. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[RefreshDigitalAsset]]
+== Refresh Digital Asset
+`<salsify-connector-mule-4:refresh-digital-asset>`
+
+
+Refresh Digital Asset This operation makes an HTTP POST request to the /orgs/{organizationId}/digital_assets/refresh endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Array of String |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[StartImportRun]]
+== Start Import Run
+`<salsify-connector-mule-4:start-import-run>`
+
+
+Start a preconfigured import This operation makes an HTTP POST request to the /orgs/{organizationId}/imports/{importId}/runs endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Import Id a| String |  The id of an import run. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Streaming Strategy a| * <<RepeatableInMemoryStream>>
+* <<RepeatableFileStoreStream>>
+* non-repeatable-stream |  Configure if repeatable streams should be used and their behaviour |  | {nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Target Variable a| String |  The name of a variable on which the operation's output will be placed |  | {nbsp}
+| Target Value a| String |  An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable |  #[payload] | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+=== Output
+
+[%autowidth.spread]
+|===
+| *Type* a| Any
+| *Attributes Type* a| <<HttpResponseAttributes>>
+|===
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[UpdateDigitalAsset]]
+== Update Digital Asset
+`<salsify-connector-mule-4:update-digital-asset>`
+
+
+Update Digital Asset This operation makes an HTTP PUT request to the /orgs/{organizationId}/digital_assets/{digitalAssetId} endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Digital Asset Id a| String |  The Id of the Salsify Digital Asset. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+[[UpdateRecord]]
+== Update Record
+`<salsify-connector-mule-4:update-record>`
+
+
+[Update one record](https://developers.salsify.com/reference#update-record). The URL must contain the Salsify record identifier as a parameter, and the record must already exist in Salsify. This operation makes an HTTP PUT request to the /orgs/{organizationId}/records/{recordId} endpoint
+
+
+=== Parameters
+
+[%header%autowidth.spread]
+|===
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Organization Id a| String |  Your organization id |  | *x*{nbsp}
+| Record Id a| String |  The Salsify record identifier for this record. |  | *x*{nbsp}
+| X Salsify Client Id a| Enumeration, one of:
+
+** MULESOFT_V1_0_0 |  X Salsify Client Id |  MULESOFT_V1_0_0 | {nbsp}
+| Body a| Array of Any |  the content to use |  #[payload] | {nbsp}
+| Config Ref a| ConfigurationProvider |  The name of the configuration to be used to execute this component |  | *x*{nbsp}
+| Custom Query Parameters a| Object |  |  #[null] | {nbsp}
+| Custom Headers a| Object |  |  #[null] | {nbsp}
+| Response Timeout a| Number |  The timeout for request to the remote service. |  | {nbsp}
+| Response Timeout Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS |  A time unit which qualifies the Response Timeout} |  | {nbsp}
+| Streaming Type a| String |  Defines if the request should be sent using streaming. Setting the value to AUTO will automatically define the best strategy based on the request content. |  | {nbsp}
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> |  A retry strategy in case of connectivity errors |  | {nbsp}
+|===
+
+
+=== For Configurations
+
+* <<Config>> {nbsp}
+
+=== Throws
+
+* SALSIFY-CONNECTOR-MULE-4:BAD_REQUEST {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CLIENT_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:CONNECTIVITY {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:INTERNAL_SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_ACCEPTABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:NOT_FOUND {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:RETRY_EXHAUSTED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVER_ERROR {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:SERVICE_UNAVAILABLE {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TIMEOUT {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:TOO_MANY_REQUESTS {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNAUTHORIZED {nbsp}
+* SALSIFY-CONNECTOR-MULE-4:UNSUPPORTED_MEDIA_TYPE {nbsp}
+
+
+
+== Types
+[[Proxy]]
+=== Proxy
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Host a| String | Host where the proxy requests will be sent. |  | x
+| Port a| Number | Port where the proxy requests will be sent. |  | x
+| Username a| String | The username to authenticate against the proxy. |  | x
+| Password a| String | The password to authenticate against the proxy. |  | x
+| Non Proxy Hosts a| String | A list of comma separated hosts against which the proxy should not be used |  | x
+|======================
+
+[[Tls]]
+=== Tls
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Enabled Protocols a| String | A comma separated list of protocols enabled for this context. |  | 
+| Enabled Cipher Suites a| String | A comma separated list of cipher suites enabled for this context. |  | 
+| Trust Store a| <<TrustStore>> |  |  | 
+| Key Store a| <<KeyStore>> |  |  | 
+| Revocation Check a| * <<StandardRevocationCheck>>
+* <<CustomOcspResponder>>
+* <<CrlFile>> |  |  | 
+|======================
+
+[[TrustStore]]
+=== Trust Store
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Path a| String | The location (which will be resolved relative to the current classpath and file system, if possible) of the trust store. |  | 
+| Password a| String | The password used to protect the trust store. |  | 
+| Type a| String | The type of store used. |  | 
+| Algorithm a| String | The algorithm used by the trust store. |  | 
+| Insecure a| Boolean | If true, no certificate validations will be performed, rendering connections vulnerable to attacks. Use at your own risk. |  | 
+|======================
+
+[[KeyStore]]
+=== Key Store
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Path a| String | The location (which will be resolved relative to the current classpath and file system, if possible) of the key store. |  | 
+| Type a| String | The type of store used. |  | 
+| Alias a| String | When the key store contains many private keys, this attribute indicates the alias of the key that should be used. If not defined, the first key in the file will be used by default. |  | 
+| Key Password a| String | The password used to protect the private key. |  | 
+| Password a| String | The password used to protect the key store. |  | 
+| Algorithm a| String | The algorithm used by the key store. |  | 
+|======================
+
+[[StandardRevocationCheck]]
+=== Standard Revocation Check
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Only End Entities a| Boolean | Only verify the last element of the certificate chain. |  | 
+| Prefer Crls a| Boolean | Try CRL instead of OCSP first. |  | 
+| No Fallback a| Boolean | Do not use the secondary checking method (the one not selected before). |  | 
+| Soft Fail a| Boolean | Avoid verification failure when the revocation server can not be reached or is busy. |  | 
+|======================
+
+[[CustomOcspResponder]]
+=== Custom Ocsp Responder
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Url a| String | The URL of the OCSP responder. |  | 
+| Cert Alias a| String | Alias of the signing certificate for the OCSP response (must be in the trust store), if present. |  | 
+|======================
+
+[[CrlFile]]
+=== Crl File
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Path a| String | The path to the CRL file. |  | 
+|======================
+
+[[Reconnection]]
+=== Reconnection
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Fails Deployment a| Boolean | When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy |  | 
+| Reconnection Strategy a| * <<Reconnect>>
+* <<ReconnectForever>> | The reconnection strategy to use |  | 
+|======================
+
+[[Reconnect]]
+=== Reconnect
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Frequency a| Number | How often (in ms) to reconnect |  | 
+| Blocking a| Boolean | If false, the reconnection strategy will run in a separate, non-blocking thread |  | 
+| Count a| Number | How many reconnection attempts to make |  | 
+|======================
+
+[[ReconnectForever]]
+=== Reconnect Forever
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Frequency a| Number | How often (in ms) to reconnect |  | 
+| Blocking a| Boolean | If false, the reconnection strategy will run in a separate, non-blocking thread |  | 
+|======================
+
+[[ExpirationPolicy]]
+=== Expiration Policy
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Max Idle Time a| Number | A scalar time value for the maximum amount of time a dynamic configuration instance should be allowed to be idle before it's considered eligible for expiration |  | 
+| Time Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS | A time unit that qualifies the maxIdleTime attribute |  | 
+|======================
+
+[[HttpResponseAttributes]]
+=== Http Response Attributes
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Status Code a| Number |  |  | x
+| Headers a| Object |  |  | x
+| Reason Phrase a| String |  |  | x
+|======================
+
+[[RepeatableInMemoryStream]]
+=== Repeatable In Memory Stream
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Initial Buffer Size a| Number | This is the amount of memory that will be allocated in order to consume the stream and provide random access to it. If the stream contains more data than can be fit into this buffer, then it will be expanded by according to the bufferSizeIncrement attribute, with an upper limit of maxInMemorySize. |  | 
+| Buffer Size Increment a| Number | This is by how much will be buffer size by expanded if it exceeds its initial size. Setting a value of zero or lower will mean that the buffer should not expand, meaning that a STREAM_MAXIMUM_SIZE_EXCEEDED error will be raised when the buffer gets full. |  | 
+| Max Buffer Size a| Number | This is the maximum amount of memory that will be used. If more than that is used then a STREAM_MAXIMUM_SIZE_EXCEEDED error will be raised. A value lower or equal to zero means no limit. |  | 
+| Buffer Unit a| Enumeration, one of:
+
+** BYTE
+** KB
+** MB
+** GB | The unit in which all these attributes are expressed |  | 
+|======================
+
+[[RepeatableFileStoreStream]]
+=== Repeatable File Store Stream
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| In Memory Size a| Number | Defines the maximum memory that the stream should use to keep data in memory. If more than that is consumed then it will start to buffer the content on disk. |  | 
+| Buffer Unit a| Enumeration, one of:
+
+** BYTE
+** KB
+** MB
+** GB | The unit in which maxInMemorySize is expressed |  | 
+|======================
+
