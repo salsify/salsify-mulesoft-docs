@@ -26,6 +26,4 @@ is the only true integrated solution that empowers brands with what they need to
 manage and syndicate product data across the digital shelf. Salsify’s Supplier
 Experience Management (SupplierXM) offers retailers the power  to collect, list,
 and enrich supplier product data with stronger collaboration and scale capabilities
-than ever before. These platforms help make up the Salsify CommerceXM Platform;
-solutions built on one interconnected platform with the only open and global network
-in the ecommerce industry.
+than ever before. These platforms help make up the complete Salsify offering; solutions built on one interconnected platform with extensive open and global network capabilities for the eCommerce industry
